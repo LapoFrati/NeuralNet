@@ -1,0 +1,4 @@
+NHiddenLayers: 3
+Layers: 10 7 3
+NInputNeurons: 15
+NOutputNeurons: 1
