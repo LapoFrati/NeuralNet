@@ -1,18 +1,18 @@
 package neuralnet;
 
 public class InputPair {
-	private int[] input, expectedOutput;
+	private double[] input, expectedOutput;
 	
-	public InputPair(int[] input, int[] expectedOutput) {
+	public InputPair(double[] input, double[] expectedOutput) {
 		this.input = input;
 		this.expectedOutput = expectedOutput;
 	}
 	
-	public int getNthInput(int n){
-		return input[n];
+	public double[] getInput(){
+		return input;
 	}
 	
-	public int getNthExpectedOutput(int n){
-		return expectedOutput[n];
+	public double[] getExpectedOutput(){
+		return expectedOutput;
 	}
 }
