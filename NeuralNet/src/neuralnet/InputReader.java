@@ -27,7 +27,7 @@ public class InputReader {
 	 * EXPECTEDRESLT-2
 	 * ...
 	*/
-	public final void readFiles(String optionsFile, String inputFile) throws IOException {
+	public void readFiles(String optionsFile, String inputFile) throws IOException {
 		readOptions(optionsFile);
 		fFilePath = Paths.get(inputFile);
 		try (Scanner scanner =  new Scanner(fFilePath, ENCODING.name())){
@@ -54,7 +54,7 @@ public class InputReader {
 	 * NOutputNeurons: 1
 	 * 
 	 */
-	public final void readOptions(String OptionFile) throws IOException{
+	public void readOptions(String OptionFile) throws IOException{
 		String option;
 		optionsFilePath = Paths.get(OptionFile);
 		try (Scanner scanner =  new Scanner(optionsFilePath, ENCODING.name())){
