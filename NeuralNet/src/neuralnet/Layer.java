@@ -2,11 +2,17 @@ package neuralnet;
 
 public class Layer {
 	ActivationFunction fun;
-	Matrix weights;
+	double[][] weights;
 	double[] lastFired; //the most recent outputs of this layer
+	double[] actualInput;
+	double[] expectedOutput;
 	
-	public Layer(int NNeurons, ActivationFunction fun){
-		lastFired = new double[NNeurons];
+	public Layer(int inputNeurons, int outputNeurons, ActivationFunction fun){
+		lastFired = new double[outputNeurons];
+		weights = new double[inputNeurons][outputNeurons];
 		this.fun = fun;
+	}
+	
+	public void forward(double[] input){
 	}
 }
