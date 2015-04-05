@@ -14,10 +14,19 @@ public class InputReader {
 	private Path fFilePath, optionsFilePath;
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
 	public ArrayList<InputPair> input;
-	
+	public int counter = 0;
+	public int inputSize;
 	public InputReader(){	
 		input = new ArrayList<InputPair>();
-	}	  
+	}
+	
+	public InputPair getPair(){
+		return input.get((counter++)%inputSize);
+	}
+	
+	public int getSize(){
+		return inputSize;
+	}
 	
 	/* Reads the file optionFile, then parses the inputFile repeatedly calling processElement
 	 * The input file should be formatted as follows:
@@ -35,6 +44,9 @@ public class InputReader {
 				processElement(scanner.nextLine(), scanner.nextLine());
 			} 
 		}
+		
+		inputSize = input.size();
+		
 		for(InputPair p : input){
 			double[] input = p.getInput();
 			double[] expected = p.getExpectedOutput();
@@ -78,7 +90,7 @@ public class InputReader {
 				layers = new int[stringLayers.length - 1];
 				for(int i = 1 /* ignore Layers: */; i < stringLayers.length; i++){
 					layers[i-1] = Integer.parseInt(stringLayers[i]);
-					System.out.print(layers[i-1]+" ");
+					//System.out.print(layers[i-1]+" ");
 				}
 				System.out.println();
 				if(scanner.hasNextLine())
