@@ -111,7 +111,6 @@ public class InputReader {
 			
 			if(option.matches("NInputNeurons: [0-9\t\r]*")){
 				numberOfInputNeurons = Integer.parseInt(option.split(" ")[1]);
-				System.out.println("NInputNeurons: "+numberOfInputNeurons);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -133,7 +132,6 @@ public class InputReader {
 			
 			if(option.matches("BatchSize: [0-9\t\r]*")){
 				batchSize = Integer.parseInt(option.split(" ")[1]);
-				System.out.println("BathcSize: "+batchSize);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -144,7 +142,6 @@ public class InputReader {
 			
 			if(option.matches("LearningRate: [.0-9\t\r]*")){
 				learningRate = Double.parseDouble(option.split(" ")[1]);
-				System.out.println("LearningRate: "+learningRate);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -155,7 +152,6 @@ public class InputReader {
 			
 			if(option.matches("Epochs: [0-9\t\r]*")){
 				epochs = Integer.parseInt(option.split(" ")[1]);
-				System.out.println("Epochs: "+epochs);
 				if(scanner.hasNextLine()){
 					System.out.println("Format Error");
 					return;
@@ -176,7 +172,7 @@ public class InputReader {
 		try(Scanner scanner = new Scanner(elementLine)){
 			scannedInput = scanner.nextLine().split(" ");
 			if(scannedInput.length != numberOfInputNeurons)
-				System.out.println("ERROR: size mismatch while reading elementLine: expected "+numberOfInputNeurons+", got: "+scannedInput.length);
+				throw new RuntimeException("ERROR: size mismatch while reading elementLine: expected "+numberOfInputNeurons+", got: "+scannedInput.length);
 			else
 				for(int i = 0; i<scannedInput.length; i++)
 					tmpInput[i] = Double.parseDouble(scannedInput[i]);
