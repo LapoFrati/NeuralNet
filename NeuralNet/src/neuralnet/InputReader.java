@@ -19,16 +19,13 @@ public class InputReader {
 	public int batchSize;
 	public double learningRate;
 	public int epochs;
+	public int exampleSize;
 	public InputReader(){	
 		input = new ArrayList<InputPair>();
 	}
 	
 	public InputPair getPair(){
 		return input.get((counter++)%inputSize);
-	}
-	
-	public int getSize(){
-		return inputSize;
 	}
 	
 	/* Reads the file optionFile, then parses the inputFile repeatedly calling processElement
@@ -39,8 +36,7 @@ public class InputReader {
 	 * EXPECTEDRESLT-2
 	 * ...
 	*/
-	public void readFiles(String optionsFile, String inputFile) throws IOException {
-		readOptions(optionsFile);
+	public void readInput(String inputFile) throws IOException {
 		fFilePath = Paths.get(inputFile);
 		try (Scanner scanner =  new Scanner(fFilePath, ENCODING.name())){
 			while (scanner.hasNextLine()){
@@ -49,16 +45,18 @@ public class InputReader {
 		}
 		
 		inputSize = input.size();
-		
-		for(InputPair p : input){
-			double[] input = p.getInput();
-			double[] expected = p.getExpectedOutput();
-			for(int i = 0; i< input.length; i++)
-				System.out.println(input[i] + " ");
-			for(int i = 0; i <expected.length; i++)
-				System.out.println(expected[i] + " ");
-			System.out.println("---");
-		}
+	}
+	
+	public void display(InputPair toDisplay){
+		double[] input = toDisplay.getInput();
+		double[] expected = toDisplay.getExpectedOutput();
+		for(int i = 0; i< input.length; i++)
+			System.out.print(input[i] + " ");
+		System.out.println();
+		for(int i = 0; i <expected.length; i++)
+			System.out.print(expected[i] + " ");
+		System.out.println();
+		System.out.println("---");
 	}
 	
 	/* Expected format:
@@ -121,7 +119,6 @@ public class InputReader {
 			
 			if(option.matches("NOutputNeurons: [0-9\t\r]*")){
 				numberOfOutputNeurons = Integer.parseInt(option.split(" ")[1]);
-				System.out.println("NOutputNeurons: "+numberOfOutputNeurons);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -165,7 +162,7 @@ public class InputReader {
 	//Each line should consist in a series of space-separated numbers of length numberOfInputNeurons, and one 
 	// of length numberOfOutputNeurons, stores the inputs processed in the arrayList "input"
 	protected void processElement(String elementLine, String testLine){ 
-		double[] tmpInput = new double[numberOfInputNeurons];
+		double[] tmpInput = new double[numberOfInputNeurons+1];
 		double[] tmpExpected = new double[numberOfOutputNeurons];
 		String[] scannedInput, scannedExpectedOutuput;
 		
@@ -176,6 +173,7 @@ public class InputReader {
 			else
 				for(int i = 0; i<scannedInput.length; i++)
 					tmpInput[i] = Double.parseDouble(scannedInput[i]);
+			tmpInput[numberOfInputNeurons] = 1.0; //bias neuron
 		}
 		
 		try(Scanner scanner = new Scanner(testLine)){
