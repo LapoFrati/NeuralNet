@@ -7,10 +7,11 @@ public class MultiLayerPerceptron{
 	Layer lowerLayer, upperLayer;
 	int inputSize;
 	InputPair currentPair;
-	public final static int MAX_EPOCH = 500;
-	public final static int BATCH = 10;
-	public final static double LEARNING_RATE = 0.0001;
+	public static int MAX_EPOCH;
+	public static int BATCH;
+	public static double LEARNING_RATE;
 	double error;
+	double[] biasedInput;
 	
 	public MultiLayerPerceptron(){
 		input = new InputReader();
@@ -18,7 +19,11 @@ public class MultiLayerPerceptron{
 	
 	public void buildNetwork(String options, String inputFile) throws IOException{
 		input.readFiles(options, inputFile);
+		MAX_EPOCH = input.epochs;
+		BATCH = input.batchSize;
+		LEARNING_RATE = input.learningRate;
 		inputSize = input.getSize();
+		biasedInput = new double[inputSize];
 		int hiddenSize = (input.numberOfInputNeurons + input.numberOfOutputNeurons)/2;
 		lowerLayer = new Layer(input.numberOfInputNeurons, hiddenSize, LEARNING_RATE);
 		upperLayer = new Layer(hiddenSize, input.numberOfOutputNeurons, LEARNING_RATE);
