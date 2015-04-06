@@ -16,6 +16,9 @@ public class InputReader {
 	public ArrayList<InputPair> input;
 	public int counter = 0;
 	public int inputSize;
+	public int batchSize;
+	public double learningRate;
+	public int epochs;
 	public InputReader(){	
 		input = new ArrayList<InputPair>();
 	}
@@ -60,10 +63,11 @@ public class InputReader {
 	
 	/* Expected format:
 	 * 
-	 * NHiddenLayers: 3
-	 * Layers: 10 7 3
 	 * NInputNeurons: 15
 	 * NOutputNeurons: 1
+	 * BatchSize: 10
+	 * LearningRate: 0.0001
+	 * Epochs: 500
 	 * 
 	 */
 	public void readOptions(String OptionFile) throws IOException{
@@ -73,6 +77,7 @@ public class InputReader {
 			
 			option = scanner.nextLine();
 			
+			/*
 			if(option.matches("NHiddenLayers: [1-9][0-9]*")){
 				numberOfLayers = Integer.parseInt(option.split(" ")[1]);
 				System.out.println("NHiddenLayers: "+numberOfLayers);
@@ -83,12 +88,14 @@ public class InputReader {
 					return;
 				}
 			}
+			*/
 			
+			/*
 			if(option.matches("Layers: [0-9 ]*")){
 				System.out.println("Layers: ");
 				String[] stringLayers = option.split(" ");
 				layers = new int[stringLayers.length - 1];
-				for(int i = 1 /* ignore Layers: */; i < stringLayers.length; i++){
+				for(int i = 1; i < stringLayers.length; i++){
 					layers[i-1] = Integer.parseInt(stringLayers[i]);
 					//System.out.print(layers[i-1]+" ");
 				}
@@ -100,6 +107,7 @@ public class InputReader {
 					return;
 				}
 			}
+			*/
 			
 			if(option.matches("NInputNeurons: [0-9\t\r]*")){
 				numberOfInputNeurons = Integer.parseInt(option.split(" ")[1]);
@@ -116,8 +124,44 @@ public class InputReader {
 				numberOfOutputNeurons = Integer.parseInt(option.split(" ")[1]);
 				System.out.println("NOutputNeurons: "+numberOfOutputNeurons);
 				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
 					System.out.println("Format Error");
+					return;
+				}
 			}
+			
+			if(option.matches("BatchSize: [0-9\t\r]*")){
+				batchSize = Integer.parseInt(option.split(" ")[1]);
+				System.out.println("BathcSize: "+batchSize);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("LearningRate: [.0-9\t\r]*")){
+				learningRate = Double.parseDouble(option.split(" ")[1]);
+				System.out.println("LearningRate: "+learningRate);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("Epochs: [0-9\t\r]*")){
+				epochs = Integer.parseInt(option.split(" ")[1]);
+				System.out.println("Epochs: "+epochs);
+				if(scanner.hasNextLine()){
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
 			 
 		}
 	}
