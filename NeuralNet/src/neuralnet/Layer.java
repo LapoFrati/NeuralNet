@@ -15,8 +15,8 @@ public class Layer {
 	}
 	
 	public void forward(double[] input){
-		output = MatrixOp.applyWeights(input, weights);
-		activations = MatrixOp.applySigmoid(output);
+		activations = MatrixOp.applyWeights(input, weights);
+		output = MatrixOp.applySigmoid(activations);
 	}
 	
 	public double backward(double[] expectedOutput){
