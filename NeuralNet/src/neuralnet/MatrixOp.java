@@ -39,4 +39,11 @@ public class MatrixOp {
 		}
 		return result;
 	}
+	
+	public static double[] applySigmoid(double[] temp){
+		double[] activatedNeurons = new double[temp.length];
+		for(int i = 0; i < activatedNeurons.length; i++)
+			activatedNeurons[i] = Sigmoid.activation(temp[i]);
+		return activatedNeurons;
+	}
 }
