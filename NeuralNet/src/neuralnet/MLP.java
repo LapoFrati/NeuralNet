@@ -51,9 +51,17 @@ public class MLP{
 		upperWeights = new double[hiddenSize+1][numberOutputNeurons]; //add one row for the bias
 	}
 	
-	public void intializeWeights(double inputSize){
-		
+	public void intializeWeights(){
+		for(int i = 0; i<upperWeights.length; i++)
+			for(int j = 0; j<upperWeights[0].length; j++)
+				upperWeights[i][j] = (Math.random()*(0.02)-0.01)/Math.sqrt(numberExamples);
+				
+		for(int i = 0; i<lowerWeights.length; i++)
+			for(int j = 0; j<lowerWeights[0].length; j++)
+				lowerWeights[i][j]=(Math.random()*(0.02)-0.01)/Math.sqrt(numberExamples);
 	}
+	
+	
 	
 	public double[] addBias(double[] vec){
 		double[] biasedVec = new double[vec.length+1];

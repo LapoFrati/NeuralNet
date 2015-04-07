@@ -13,7 +13,7 @@ public class InputUnitTest {
 		InputReader in = new InputReader();
 		
 		try{
-			in.readOptions("Options.txt");
+			in.readOptions("TestInput/Options.txt");
 		}catch(IOException e){}
 		
 		assertEquals(in.batchSize, 10);
@@ -27,8 +27,8 @@ public class InputUnitTest {
 	public void inputReader_SIZEMISMATCH() {
 		InputReader in = new InputReader();
 		try{
-			in.readOptions("Options.txt");
-			in.readInput("WrongInput.txt");
+			in.readOptions("TestInput/Options.txt");
+			in.readInput("TestInput/WrongInput.txt");
 		}catch(IOException e){}
 	}
 	
@@ -36,8 +36,8 @@ public class InputUnitTest {
 	public void inputReader_OK() {
 		InputReader in = new InputReader();
 		try{
-			in.readOptions("Options.txt");
-			in.readInput("Input.txt");
+			in.readOptions("TestInput/Options.txt");
+			in.readInput("TestInput/Input.txt");
 		}catch(IOException e){}
 		
 		double[] firstInput = in.getPair().getInput();
