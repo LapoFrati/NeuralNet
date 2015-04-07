@@ -9,17 +9,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputReader {
-	public int numberOfInputNeurons, numberOfOutputNeurons, inputLength, numberOfLayers;
 	public int[] layers;
+	
 	private Path fFilePath, optionsFilePath;
+	
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
+	
 	public ArrayList<InputPair> input;
-	public int counter = 0;
-	public int numberExamples;
-	public int batchSize;
+	
+	public int 	counter = 0,
+				numberExamples,
+				batchSize,
+				epochs,
+				exampleSize,
+				numberOfInputNeurons, 
+				numberOfOutputNeurons,
+				numberOfHiddenNeurons,
+				inputLength;
+	
 	public double learningRate;
-	public int epochs;
-	public int exampleSize;
+	
 	public InputReader(){	
 		input = new ArrayList<InputPair>();
 	}
@@ -63,6 +72,7 @@ public class InputReader {
 	 * 
 	 * NInputNeurons: 15
 	 * NOutputNeurons: 1
+	 * NHiddenNeurons: 7
 	 * BatchSize: 10
 	 * LearningRate: 0.0001
 	 * Epochs: 500
@@ -74,19 +84,6 @@ public class InputReader {
 		try (Scanner scanner =  new Scanner(optionsFilePath, ENCODING.name())){
 			
 			option = scanner.nextLine();
-			
-			/*
-			if(option.matches("NHiddenLayers: [1-9][0-9]*")){
-				numberOfLayers = Integer.parseInt(option.split(" ")[1]);
-				System.out.println("NHiddenLayers: "+numberOfLayers);
-				if(scanner.hasNextLine())
-					option = scanner.nextLine();
-				else{
-					System.out.println("Format Error");
-					return;
-				}
-			}
-			*/
 			
 			/*
 			if(option.matches("Layers: [0-9 ]*")){
@@ -119,6 +116,16 @@ public class InputReader {
 			
 			if(option.matches("NOutputNeurons: [0-9\t\r]*")){
 				numberOfOutputNeurons = Integer.parseInt(option.split(" ")[1]);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("NHiddenNeurons: [1-9][0-9]*")){
+				numberOfHiddenNeurons = Integer.parseInt(option.split(" ")[1]);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
