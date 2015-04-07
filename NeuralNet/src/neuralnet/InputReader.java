@@ -15,7 +15,7 @@ public class InputReader {
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
 	public ArrayList<InputPair> input;
 	public int counter = 0;
-	public int inputSize;
+	public int numberExamples;
 	public int batchSize;
 	public double learningRate;
 	public int epochs;
@@ -25,7 +25,7 @@ public class InputReader {
 	}
 	
 	public InputPair getPair(){
-		return input.get((counter++)%inputSize);
+		return input.get((counter++)%numberExamples);
 	}
 	
 	/* Reads the file optionFile, then parses the inputFile repeatedly calling processElement
@@ -44,7 +44,7 @@ public class InputReader {
 			} 
 		}
 		
-		inputSize = input.size();
+		numberExamples = input.size();
 	}
 	
 	public void display(InputPair toDisplay){
@@ -109,6 +109,7 @@ public class InputReader {
 			
 			if(option.matches("NInputNeurons: [0-9\t\r]*")){
 				numberOfInputNeurons = Integer.parseInt(option.split(" ")[1]);
+				numberOfInputNeurons++;
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -162,24 +163,24 @@ public class InputReader {
 	//Each line should consist in a series of space-separated numbers of length numberOfInputNeurons, and one 
 	// of length numberOfOutputNeurons, stores the inputs processed in the arrayList "input"
 	protected void processElement(String elementLine, String testLine){ 
-		double[] tmpInput = new double[numberOfInputNeurons+1];
+		double[] tmpInput = new double[numberOfInputNeurons];
 		double[] tmpExpected = new double[numberOfOutputNeurons];
 		String[] scannedInput, scannedExpectedOutuput;
 		
 		try(Scanner scanner = new Scanner(elementLine)){
 			scannedInput = scanner.nextLine().split(" ");
-			if(scannedInput.length != numberOfInputNeurons)
+			if(scannedInput.length != numberOfInputNeurons-1)//bias neuron is added manually
 				throw new RuntimeException("ERROR: size mismatch while reading elementLine: expected "+numberOfInputNeurons+", got: "+scannedInput.length);
 			else
 				for(int i = 0; i<scannedInput.length; i++)
 					tmpInput[i] = Double.parseDouble(scannedInput[i]);
-			tmpInput[numberOfInputNeurons] = 1.0; //bias neuron
+			tmpInput[numberOfInputNeurons-1] = 1.0; //bias neuron
 		}
 		
 		try(Scanner scanner = new Scanner(testLine)){
 			scannedExpectedOutuput = scanner.nextLine().split(" ");
 			if(scannedExpectedOutuput.length != numberOfOutputNeurons)
-				System.out.println("ERROR: size mismatch while reading testLine: expected "+numberOfInputNeurons+", got: "+scannedExpectedOutuput.length);
+				System.out.println("ERROR: size mismatch while reading testLine: expected "+numberOfOutputNeurons+", got: "+scannedExpectedOutuput.length);
 			else
 				for(int i = 0; i<scannedExpectedOutuput.length; i++)
 					tmpExpected[i] = Double.parseDouble(scannedExpectedOutuput[i]);			

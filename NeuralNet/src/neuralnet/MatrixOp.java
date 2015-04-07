@@ -46,4 +46,11 @@ public class MatrixOp {
 			activatedNeurons[i] = Sigmoid.activation(temp[i]);
 		return activatedNeurons;
 	}
+	
+	public static double[] applyDerivative(double[] temp){
+		double[] activatedNeurons = new double[temp.length];
+		for(int i = 0; i < activatedNeurons.length; i++)
+			activatedNeurons[i] = Sigmoid.derivative(temp[i]);
+		return activatedNeurons;
+	}
 }

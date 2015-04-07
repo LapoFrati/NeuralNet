@@ -19,7 +19,7 @@ public class InputUnitTest {
 		assertEquals(in.batchSize, 10);
 		assertEquals(in.epochs, 500);
 		assertEquals(in.learningRate, 0.0001, precision);
-		assertEquals(in.numberOfInputNeurons, 15);
+		assertEquals(in.numberOfInputNeurons, 16); //counting the bias neuron
 		assertEquals(in.numberOfOutputNeurons, 1);
 	}
 	
