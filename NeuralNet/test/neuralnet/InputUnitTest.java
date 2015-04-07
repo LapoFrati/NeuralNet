@@ -19,7 +19,7 @@ public class InputUnitTest {
 		assertEquals(in.batchSize, 10);
 		assertEquals(in.epochs, 500);
 		assertEquals(in.learningRate, 0.0001, precision);
-		assertEquals(in.numberOfInputNeurons, 16); //counting the bias neuron
+		assertEquals(in.numberOfInputNeurons, 15);
 		assertEquals(in.numberOfOutputNeurons, 1);
 	}
 	
@@ -41,11 +41,10 @@ public class InputUnitTest {
 		}catch(IOException e){}
 		
 		double[] firstInput = in.getPair().getInput();
-		assertEquals(firstInput.length, 16);
+		assertEquals(firstInput.length, 15);
 		for(int i = 0; i < 15; i++){
 			assertEquals(firstInput[i], (double)(i+1), precision);
 		}
-		assertEquals(firstInput[15],1.0, precision);
 	}
 
 }

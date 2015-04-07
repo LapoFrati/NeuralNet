@@ -109,7 +109,6 @@ public class InputReader {
 			
 			if(option.matches("NInputNeurons: [0-9\t\r]*")){
 				numberOfInputNeurons = Integer.parseInt(option.split(" ")[1]);
-				numberOfInputNeurons++;
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
@@ -169,12 +168,11 @@ public class InputReader {
 		
 		try(Scanner scanner = new Scanner(elementLine)){
 			scannedInput = scanner.nextLine().split(" ");
-			if(scannedInput.length != numberOfInputNeurons-1)//bias neuron is added manually
+			if(scannedInput.length != numberOfInputNeurons)
 				throw new RuntimeException("ERROR: size mismatch while reading elementLine: expected "+numberOfInputNeurons+", got: "+scannedInput.length);
 			else
 				for(int i = 0; i<scannedInput.length; i++)
 					tmpInput[i] = Double.parseDouble(scannedInput[i]);
-			tmpInput[numberOfInputNeurons-1] = 1.0; //bias neuron
 		}
 		
 		try(Scanner scanner = new Scanner(testLine)){

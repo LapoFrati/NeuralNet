@@ -156,7 +156,7 @@ public class MLP{
 				
 				forward();
 				error += backward(currentPair.getExpectedOutput());
-				
+				System.out.println("Epoch: "+i+" Error: "+error);
 				if(j%batch == 0){
 					updateWeights();
 				}
