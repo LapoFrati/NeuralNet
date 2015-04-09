@@ -1,6 +1,7 @@
 package neuralnet;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class MLP{
 	InputReader input;
@@ -31,7 +32,10 @@ public class MLP{
 				upperWeights, 
 				dWlower, 
 				dWupper, 
-				temp;
+				tempdWlower,
+				tempdWupper;
+	Random rnd;
+	long seed;
 	
 	public MLP(){
 		input = new InputReader();
@@ -41,27 +45,60 @@ public class MLP{
 		input.readOptions(optionsFile);
 		input.readInput(inputFile);
 		epochs = input.epochs;
+		System.out.println("Epochs: "+epochs);
 		batch = input.batchSize;
+		System.out.println("Batch: "+batch);
 		learningRate = input.learningRate;
+		System.out.println("learningRate: "+ learningRate);
 		numberExamples = input.numberExamples;
+		System.out.println("NumberOfExamples: "+numberExamples);
 		numberInputNeurons = input.numberOfInputNeurons;
+		System.out.println("NumberOfInputNeurons: "+numberInputNeurons);
 		numberOutputNeurons = input.numberOfOutputNeurons;
-		hiddenSize = (numberInputNeurons + numberOutputNeurons)/2;
-		lowerWeights = new double[numberInputNeurons+1][hiddenSize]; //add one row for the bias
-		upperWeights = new double[hiddenSize+1][numberOutputNeurons]; //add one row for the bias
+		System.out.println("NumberOfOutputNeurons: "+numberOutputNeurons);
+		numberHiddenNeurons = input.numberOfHiddenNeurons;
+		System.out.println("NumberOfHiddenNeurons: "+numberHiddenNeurons);
+		seed = input.seed;
+		System.out.println("Seed: "+seed);
+		
+		rnd = new Random(seed);
+		
+		lowerWeights = new double[numberInputNeurons+1][numberHiddenNeurons]; //add one row for the bias
+		System.out.println("LowerWeights: "+lowerWeights.length+"x"+lowerWeights[0].length);
+		dWlower= new double[numberInputNeurons+1][numberHiddenNeurons];
+		tempdWlower = new double[numberInputNeurons+1][numberHiddenNeurons];
+		
+		upperWeights = new double[numberHiddenNeurons+1][numberOutputNeurons]; //add one row for the bias
+		System.out.println("UpperWeights: "+upperWeights.length+"x"+upperWeights[0].length);
+		dWupper = new double[numberHiddenNeurons+1][numberOutputNeurons];
+		tempdWupper = new double[numberHiddenNeurons+1][numberOutputNeurons];
+		
+		initializeWeights();
+		
+		upperDeltas = new double[numberOutputNeurons];
+		//System.out.println("UpperDeltas: "+upperDeltas.length);
+		lowerDeltas = new double[numberHiddenNeurons];
+		//System.out.println("LowerDeltas: "+lowerDeltas.length);
 	}
 	
-	public void intializeWeights(){
-		for(int i = 0; i<upperWeights.length; i++)
-			for(int j = 0; j<upperWeights[0].length; j++)
-				upperWeights[i][j] = (Math.random()*(0.02)-0.01)/Math.sqrt(numberExamples);
+	public void initializeWeights(){
+		System.out.println("Range: "+0.2/Math.sqrt(numberExamples));
+		for(int i = 0; i<upperWeights.length; i++){
+			for(int j = 0; j<upperWeights[0].length; j++){
+				upperWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
+				System.out.print(upperWeights[i][j]+" ");
+			}
+			System.out.println();
+		}
 				
-		for(int i = 0; i<lowerWeights.length; i++)
-			for(int j = 0; j<lowerWeights[0].length; j++)
-				lowerWeights[i][j]=(Math.random()*(0.02)-0.01)/Math.sqrt(numberExamples);
+		for(int i = 0; i<lowerWeights.length; i++){
+			for(int j = 0; j<lowerWeights[0].length; j++){
+				lowerWeights[i][j]=(rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
+				System.out.print(lowerWeights[i][j]+" ");
+			}
+			System.out.println();
+		}
 	}
-	
-	
 	
 	public double[] addBias(double[] vec){
 		double[] biasedVec = new double[vec.length+1];
@@ -72,7 +109,7 @@ public class MLP{
 	}
 	
 	public void forward(){
-		lowerActivations = MatrixOp.applyWeights(actualInput, lowerWeights);
+		lowerActivations = MatrixOp.applyWeights(addBias(actualInput), lowerWeights);
 		hiddenNeuronsValues = MatrixOp.applySigmoid(addBias(lowerActivations));
 		upperActivations = MatrixOp.applyWeights(hiddenNeuronsValues, upperWeights);
 		actualOutput = MatrixOp.applySigmoid(upperActivations);
@@ -80,24 +117,23 @@ public class MLP{
 	
 	public void calculateUpperDeltas(){
 		for(int i = 0; i< expectedOutput.length; i++){
+			System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
 			upperDeltas[i]=(expectedOutput[i]-actualOutput[i])*Sigmoid.derivative(upperActivations[i]);
 		}
 	}
 	
 	public void calculateUpperDW(){
-		temp = new double[upperWeights.length][upperWeights[0].length];
-		
 		for(int i = 0; i<upperWeights.length; i++){
 			for(int j = 0; j<upperWeights[0].length; j++){
-				temp[i][j] = -learningRate*hiddenNeuronsValues[i]*upperDeltas[j];
+				tempdWupper[i][j] = -learningRate*hiddenNeuronsValues[i]*upperDeltas[j];
 			}
 		}
 		
-		dWupper = MatrixOp.sumMatrix(temp, dWupper);
+		dWupper = MatrixOp.sumMatrix(tempdWupper, dWupper);
 	}
 	
 	public void calculateLowerDeltas(){
-		for(int j = 0; j<upperWeights.length; j++){
+		for(int j = 0; j<(upperWeights.length-1); j++){//ignore the bias neuron
 			for(int i = 0; i<upperDeltas.length; i++){
 				lowerDeltas[j] = upperDeltas[i]*dWupper[j][i];
 			}
@@ -106,15 +142,15 @@ public class MLP{
 	}
 	
 	public void calculateLowerDW(){
-		temp = new double[lowerWeights.length][lowerWeights[0].length];
-		
 		for(int i = 0; i<lowerWeights.length; i++){
 			for(int j = 0; j<lowerWeights[0].length; j++){
-				temp[i][j] = -learningRate*actualInput[i]*lowerDeltas[j];
+				if(i==lowerWeights.length-1)//last neuron is the bias with value 1.0
+					tempdWlower[i][j] = -learningRate*lowerDeltas[j];
+				else	
+					tempdWlower[i][j] = -learningRate*actualInput[i]*lowerDeltas[j];
 			}
 		}
-		
-		dWupper = MatrixOp.sumMatrix(temp, dWupper);
+		dWlower = MatrixOp.sumMatrix(tempdWlower, dWlower);
 	}
 	
 	public double backward(double[] expectedOutput){
@@ -133,8 +169,8 @@ public class MLP{
 	
 	public void updateWeights(){
 		
-		MatrixOp.sumMatrix(lowerWeights, dWlower);
-		MatrixOp.sumMatrix(upperWeights, dWupper);
+		lowerWeights = MatrixOp.sumMatrix(lowerWeights, dWlower);
+		upperWeights = MatrixOp.sumMatrix(upperWeights, dWupper);
 		
 		for(int i = 0; i<dWlower.length; i++){ //reset dW
 			for(int j = 0; j<dWlower[0].length; j++)
@@ -162,9 +198,5 @@ public class MLP{
 				}
 			}
 		}
-	}
-	
-	public void test(){
-		System.out.println("TODO");
 	}
 }
