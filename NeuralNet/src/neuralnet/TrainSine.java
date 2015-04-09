@@ -2,14 +2,12 @@ package neuralnet;
 
 import java.io.IOException;
 
-public class TrainXOR {
-
+public class TrainSine {
 	public static void main(String[] args) throws IOException {
 		MLP mlp = new MLP();
 		
-		mlp.buildNetwork("XOR/Options.txt","XOR/TrainInput.txt");
+		mlp.buildNetwork("Sine/Options.txt","Sine/TrainInput.txt");
 		mlp.train();
-
+		
 	}
-
 }
