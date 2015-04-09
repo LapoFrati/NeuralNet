@@ -27,6 +27,8 @@ public class InputReader {
 				numberOfHiddenNeurons,
 				inputLength;
 	
+	public long seed;
+	
 	public double learningRate;
 	
 	public InputReader(){	
@@ -134,8 +136,18 @@ public class InputReader {
 				}
 			}
 			
-			if(option.matches("BatchSize: [0-9\t\r]*")){
+			if(option.matches("BatchSize: [1-9][0-9]*")){
 				batchSize = Integer.parseInt(option.split(" ")[1]);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("Seed: [1-9][0-9]*")){
+				seed = Long.parseLong(option.split(" ")[1]);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
