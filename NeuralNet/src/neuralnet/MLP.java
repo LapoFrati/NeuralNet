@@ -1,6 +1,7 @@
 package neuralnet;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 public class MLP{
@@ -86,17 +87,13 @@ public class MLP{
 		for(int i = 0; i<upperWeights.length; i++){
 			for(int j = 0; j<upperWeights[0].length; j++){
 				upperWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
-				System.out.print(upperWeights[i][j]+" ");
 			}
-			System.out.println();
 		}
 				
 		for(int i = 0; i<lowerWeights.length; i++){
 			for(int j = 0; j<lowerWeights[0].length; j++){
 				lowerWeights[i][j]=(rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
-				System.out.print(lowerWeights[i][j]+" ");
 			}
-			System.out.println();
 		}
 	}
 	
@@ -183,6 +180,7 @@ public class MLP{
 	}
 	
 	public void train(){
+		double[] results = new double[epochs];
 		for(int i = 0; i<epochs; i++){
 			error = 0;
 			for(int j=0; j<numberExamples; j++){
@@ -192,10 +190,19 @@ public class MLP{
 				
 				forward();
 				error += backward(currentPair.getExpectedOutput());
-				System.out.println("Epoch: "+i+" Error: "+error);
 				if(j%batch == 0){
+					//System.out.println(Arrays.deepToString(dWupper));
+					//System.out.println(Arrays.deepToString(dWlower));
 					updateWeights();
 				}
+			}
+			results[i] = error;
+			System.out.println("Epoch: "+i+" Error: "+error);
+			if(i>0){
+				if(results[i] > results[i-1])
+					System.out.println("+"+(results[i]-results[i-1]));
+				else
+					System.out.println(results[i]-results[i-1]);
 			}
 		}
 	}
