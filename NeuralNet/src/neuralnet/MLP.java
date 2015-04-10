@@ -62,7 +62,10 @@ public class MLP{
 		seed = input.seed;
 		System.out.println("Seed: "+seed);
 		
-		rnd = new Random(seed);
+		hiddenNeuronsValues = new double[numberHiddenNeurons];
+		lowerActivations = new double[numberHiddenNeurons];
+		upperActivations = new double[numberOutputNeurons];
+		actualInput = new double[numberInputNeurons];
 		
 		lowerWeights = new double[numberInputNeurons+1][numberHiddenNeurons]; //add one row for the bias
 		System.out.println("LowerWeights: "+lowerWeights.length+"x"+lowerWeights[0].length);
@@ -74,6 +77,7 @@ public class MLP{
 		dWupper = new double[numberHiddenNeurons+1][numberOutputNeurons];
 		tempdWupper = new double[numberHiddenNeurons+1][numberOutputNeurons];
 		
+		rnd = new Random(seed);
 		initializeWeights();
 		
 		upperDeltas = new double[numberOutputNeurons];
@@ -83,7 +87,7 @@ public class MLP{
 	}
 	
 	public void initializeWeights(){
-		System.out.println("Range: "+0.2/Math.sqrt(numberExamples));
+		System.out.println("weightRange: +-"+0.2/Math.sqrt(numberExamples));
 		for(int i = 0; i<upperWeights.length; i++){
 			for(int j = 0; j<upperWeights[0].length; j++){
 				upperWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
@@ -107,8 +111,8 @@ public class MLP{
 	
 	public void forward(){
 		lowerActivations = MatrixOp.applyWeights(addBias(actualInput), lowerWeights);
-		hiddenNeuronsValues = MatrixOp.applySigmoid(addBias(lowerActivations));
-		upperActivations = MatrixOp.applyWeights(hiddenNeuronsValues, upperWeights);
+		hiddenNeuronsValues = MatrixOp.applySigmoid(lowerActivations);
+		upperActivations = MatrixOp.applyWeights(addBias(hiddenNeuronsValues), upperWeights);
 		actualOutput = MatrixOp.applySigmoid(upperActivations);
 	}
 	
@@ -122,7 +126,10 @@ public class MLP{
 	public void calculateUpperDW(){
 		for(int i = 0; i<upperWeights.length; i++){
 			for(int j = 0; j<upperWeights[0].length; j++){
-				tempdWupper[i][j] = -learningRate*hiddenNeuronsValues[i]*upperDeltas[j];
+				if(i == upperWeights.length-1)//last neuron is the bias with value 1.0
+					tempdWupper[i][j] = -learningRate*upperDeltas[j];
+				else
+					tempdWupper[i][j] = -learningRate*hiddenNeuronsValues[i]*upperDeltas[j];
 			}
 		}
 		
@@ -169,11 +176,11 @@ public class MLP{
 		lowerWeights = MatrixOp.sumMatrix(lowerWeights, dWlower);
 		upperWeights = MatrixOp.sumMatrix(upperWeights, dWupper);
 		
-		for(int i = 0; i<dWlower.length; i++){ //reset dW
+		for(int i = 0; i<dWlower.length; i++){ //reset dWlower
 			for(int j = 0; j<dWlower[0].length; j++)
 				dWlower[i][j] = 0.0;
 		}
-		for(int i = 0; i<dWupper.length; i++){ //reset dW
+		for(int i = 0; i<dWupper.length; i++){ //reset dWupper
 			for(int j = 0; j<dWupper[0].length; j++)
 				dWupper[i][j] = 0.0;
 		}

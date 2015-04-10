@@ -4,4 +4,4 @@ NHiddenNeurons: 3
 BatchSize: 1
 Seed: 42
 LearningRate: 0.01
-Epochs: 20
+Epochs: 100
