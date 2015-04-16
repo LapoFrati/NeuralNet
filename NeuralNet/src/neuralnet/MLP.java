@@ -34,9 +34,11 @@ public class MLP{
 				dWupper;
 	Random rnd;
 	long seed;
+	boolean useSigmoid;
 	
-	public MLP(){
+	public MLP(boolean useSigmoid){
 		input = new InputReader();
+		this.useSigmoid = useSigmoid; 
 	}
 	
 	public void buildNetwork(String optionsFile, String inputFile) throws IOException{
@@ -103,15 +105,27 @@ public class MLP{
 	
 	public void forward(){
 		lowerActivations = MatrixOp.applyWeights(actualInput, lowerWeights);
-		lowerOutput = addBias(MatrixOp.applySigmoid(lowerActivations));
+		
+		if(useSigmoid)
+			lowerOutput = addBias(MatrixOp.applySigmoid(lowerActivations));
+		else
+			lowerOutput = addBias(MatrixOp.applyTanh(lowerActivations));
+		
 		upperActivations = MatrixOp.applyWeights(lowerOutput, upperWeights);
-		actualOutput = MatrixOp.applySigmoid(upperActivations);
+		
+		if(useSigmoid)
+			actualOutput = MatrixOp.applySigmoid(upperActivations);
+		else
+			actualOutput = MatrixOp.applyTanh(upperActivations);
 	}
 	
 	public void calculateUpperDeltas(){
 		for(int i = 0; i< expectedOutput.length; i++){
-			System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
-			upperDeltas[i]=(expectedOutput[i]-actualOutput[i])*Sigmoid.derivative(upperActivations[i]);
+			//System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
+			if(useSigmoid)
+				upperDeltas[i]=(expectedOutput[i]-actualOutput[i])*Sigmoid.derivative(upperActivations[i]);
+			else
+				upperDeltas[i]=(expectedOutput[i]-actualOutput[i])*Hyperbolic.derivative(upperActivations[i]);
 		}
 	}
 	
@@ -129,7 +143,10 @@ public class MLP{
 			for(int j = 0; j<upperWeights[0].length; j++){
 				lowerDeltas[i] += upperDeltas[j]*upperWeights[i][j];
 			}
-			lowerDeltas[i] = lowerDeltas[i]*Sigmoid.derivative(lowerActivations[i]);
+			if(useSigmoid)
+				lowerDeltas[i] = lowerDeltas[i]*Sigmoid.derivative(lowerActivations[i]);
+			else
+				lowerDeltas[i] = lowerDeltas[i]*Hyperbolic.derivative(lowerActivations[i]);
 		}
 	}
 	
@@ -160,11 +177,11 @@ public class MLP{
 		lowerWeights = MatrixOp.sumMatrix(lowerWeights, dWlower);
 		upperWeights = MatrixOp.sumMatrix(upperWeights, dWupper);
 		
-		for(int i = 0; i<dWlower.length; i++){ //reset dWlower
+		for(int i = 0; i<dWlower.length; i++){
 			for(int j = 0; j<dWlower[0].length; j++)
 				dWlower[i][j] = dWlower[i][j]*momentum;
 		}
-		for(int i = 0; i<dWupper.length; i++){ //reset dWupper
+		for(int i = 0; i<dWupper.length; i++){
 			for(int j = 0; j<dWupper[0].length; j++)
 				dWupper[i][j] = dWupper[i][j]*momentum;
 		}
@@ -182,8 +199,6 @@ public class MLP{
 				forward();
 				error += backward(expectedOutput);
 				if((j+1)%batch == 0){
-					//System.out.println(Arrays.deepToString(lowerWeights));
-					//System.out.println(Arrays.deepToString(upperWeights));
 					updateWeights();
 				}
 			}
@@ -191,12 +206,12 @@ public class MLP{
 			if(error < 0.01)
 				errorTooBig = false;
 			System.out.println("Epoch: "+i+" Error: "+error);
-			if(i>0){
+			/*if(i>0){
 				if(results[i] > results[i-1])
 					System.out.println("+"+(results[i]-results[i-1]));
 				else
 					System.out.println(results[i]-results[i-1]);
-			}
+			}*/
 		}
 	}
 }
