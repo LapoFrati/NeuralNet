@@ -43,14 +43,14 @@ public class MLP{
 	
 	public void buildNetwork(String optionsFile, String inputFile) throws IOException{
 		input.readOptions(optionsFile);
-		input.readInput(inputFile);
+		input.readTrainInput(inputFile);
 		epochs = input.epochs;
 		System.out.println("Epochs: "+epochs);
 		batch = input.batchSize;
 		System.out.println("Batch: "+batch);
 		learningRate = input.learningRate;
 		System.out.println("learningRate: "+ learningRate);
-		numberExamples = input.numberExamples;
+		numberExamples = input.numberTrainExamples;
 		System.out.println("Momentum: "+ learningRate);
 		momentum = input.momentum;
 		System.out.println("NumberOfExamples: "+numberExamples);
@@ -193,7 +193,7 @@ public class MLP{
 		for(int i = 0; i<epochs && errorTooBig; i++){
 			error = 0;
 			for(int j=0; j<numberExamples; j++){
-				currentPair = input.getPair();
+				currentPair = input.getTrainPair();
 				actualInput = addBias(currentPair.getInput());
 				expectedOutput = currentPair.getExpectedOutput();
 				forward();
@@ -205,7 +205,7 @@ public class MLP{
 			results[i] = error;
 			if(error < 0.01)
 				errorTooBig = false;
-			System.out.println("Epoch: "+i+" Error: "+error);
+			System.out.println("Epoch: "+i+" Train error: "+error);
 			/*if(i>0){
 				if(results[i] > results[i-1])
 					System.out.println("+"+(results[i]-results[i-1]));

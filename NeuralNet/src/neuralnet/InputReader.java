@@ -15,10 +15,12 @@ public class InputReader {
 	
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
 	
-	public ArrayList<InputPair> input;
+	public ArrayList<InputPair> inputTrain, inputTest;
 	
-	public int 	counter = 0,
-				numberExamples,
+	public int 	trainCounter = 0,
+				testCounter = 0,
+				numberTrainExamples,
+				numberTestExamples,
 				batchSize,
 				epochs,
 				exampleSize,
@@ -33,11 +35,15 @@ public class InputReader {
 				  momentum;
 	
 	public InputReader(){	
-		input = new ArrayList<InputPair>();
+		inputTrain = new ArrayList<InputPair>();
 	}
 	
-	public InputPair getPair(){
-		return input.get((counter++)%numberExamples);
+	public InputPair getTrainPair(){
+		return inputTrain.get((trainCounter++)%numberTrainExamples);
+	}
+	
+	public InputPair getTestPair(){
+		return inputTest.get((testCounter++)%numberTestExamples);
 	}
 	
 	/* Reads the file optionFile, then parses the inputFile repeatedly calling processElement
@@ -48,15 +54,26 @@ public class InputReader {
 	 * EXPECTEDRESLT-2
 	 * ...
 	*/
-	public void readInput(String inputFile) throws IOException {
+	public void readTrainInput(String inputFile) throws IOException {
 		fFilePath = Paths.get(inputFile);
 		try (Scanner scanner =  new Scanner(fFilePath, ENCODING.name())){
 			while (scanner.hasNextLine()){
-				processElement(scanner.nextLine(), scanner.nextLine());
+				processElement(scanner.nextLine(), scanner.nextLine(), inputTrain);
 			} 
 		}
 		
-		numberExamples = input.size();
+		numberTrainExamples = inputTrain.size();
+	}
+	
+	public void readTestInput(String inputFile) throws IOException {
+		fFilePath = Paths.get(inputFile);
+		try (Scanner scanner =  new Scanner(fFilePath, ENCODING.name())){
+			while (scanner.hasNextLine()){
+				processElement(scanner.nextLine(), scanner.nextLine(), inputTest);
+			} 
+		}
+		
+		numberTestExamples = inputTrain.size();
 	}
 	
 	public void display(InputPair toDisplay){
@@ -192,7 +209,7 @@ public class InputReader {
 	
 	//Each line should consist in a series of space-separated numbers of length numberOfInputNeurons, and one 
 	// of length numberOfOutputNeurons, stores the inputs processed in the arrayList "input"
-	protected void processElement(String elementLine, String testLine){ 
+	protected void processElement(String elementLine, String testLine, ArrayList<InputPair> store){ 
 		double[] tmpInput = new double[numberOfInputNeurons];
 		double[] tmpExpected = new double[numberOfOutputNeurons];
 		String[] scannedInput, scannedExpectedOutuput;
@@ -215,6 +232,6 @@ public class InputReader {
 					tmpExpected[i] = Double.parseDouble(scannedExpectedOutuput[i]);			
 		}
 		
-		input.add(new InputPair(tmpInput, tmpExpected));
+		store.add(new InputPair(tmpInput, tmpExpected));
 	}
 }	 

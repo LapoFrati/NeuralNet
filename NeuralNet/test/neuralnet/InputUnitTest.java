@@ -28,7 +28,7 @@ public class InputUnitTest {
 		InputReader in = new InputReader();
 		try{
 			in.readOptions("TestInput/Options.txt");
-			in.readInput("TestInput/WrongInput.txt");
+			in.readTrainInput("TestInput/WrongInput.txt");
 		}catch(IOException e){}
 	}
 	
@@ -37,10 +37,10 @@ public class InputUnitTest {
 		InputReader in = new InputReader();
 		try{
 			in.readOptions("TestInput/Options.txt");
-			in.readInput("TestInput/Input.txt");
+			in.readTrainInput("TestInput/Input.txt");
 		}catch(IOException e){}
 		
-		double[] firstInput = in.getPair().getInput();
+		double[] firstInput = in.getTrainPair().getInput();
 		assertEquals(firstInput.length, 15);
 		for(int i = 0; i < 15; i++){
 			assertEquals(firstInput[i], (double)(i+1), precision);
