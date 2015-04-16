@@ -1,7 +1,7 @@
 NInputNeurons: 2
 NOutputNeurons: 1
-NHiddenNeurons: 3
-BatchSize: 1
+NHiddenNeurons: 2
+BatchSize: 4
 Seed: 42
-LearningRate: 0.01
-Epochs: 100
+LearningRate: 0.1
+Epochs: 1000000

@@ -11,5 +11,4 @@ public class TrainXOR {
 		mlp.train();
 
 	}
-
 }
