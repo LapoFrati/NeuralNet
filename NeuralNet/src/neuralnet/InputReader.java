@@ -36,6 +36,7 @@ public class InputReader {
 	
 	public InputReader(){	
 		inputTrain = new ArrayList<InputPair>();
+		inputTest = new ArrayList<InputPair>();
 	}
 	
 	public InputPair getTrainPair(){
@@ -73,7 +74,7 @@ public class InputReader {
 			} 
 		}
 		
-		numberTestExamples = inputTrain.size();
+		numberTestExamples = inputTest.size();
 	}
 	
 	public void display(InputPair toDisplay){
