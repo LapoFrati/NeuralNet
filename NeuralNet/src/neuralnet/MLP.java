@@ -16,7 +16,8 @@ public class MLP{
 				numberHiddenNeurons;
 	
 	public double 	learningRate, 
-					error;
+					error,
+					momentum;
 	
 	double[] 	actualInput,
 				actualOutput,
@@ -48,6 +49,8 @@ public class MLP{
 		learningRate = input.learningRate;
 		System.out.println("learningRate: "+ learningRate);
 		numberExamples = input.numberExamples;
+		System.out.println("Momentum: "+ learningRate);
+		momentum = input.momentum;
 		System.out.println("NumberOfExamples: "+numberExamples);
 		numberInputNeurons = input.numberOfInputNeurons;
 		System.out.println("NumberOfInputNeurons: "+numberInputNeurons);
@@ -159,17 +162,18 @@ public class MLP{
 		
 		for(int i = 0; i<dWlower.length; i++){ //reset dWlower
 			for(int j = 0; j<dWlower[0].length; j++)
-				dWlower[i][j] = 0.0;
+				dWlower[i][j] = dWlower[i][j]*momentum;
 		}
 		for(int i = 0; i<dWupper.length; i++){ //reset dWupper
 			for(int j = 0; j<dWupper[0].length; j++)
-				dWupper[i][j] = 0.0;
+				dWupper[i][j] = dWupper[i][j]*momentum;
 		}
 	}
 	
 	public void train(){
 		double[] results = new double[epochs];
-		for(int i = 0; i<epochs; i++){
+		boolean errorTooBig = true;
+		for(int i = 0; i<epochs && errorTooBig; i++){
 			error = 0;
 			for(int j=0; j<numberExamples; j++){
 				currentPair = input.getPair();
@@ -184,6 +188,8 @@ public class MLP{
 				}
 			}
 			results[i] = error;
+			if(error < 0.01)
+				errorTooBig = false;
 			System.out.println("Epoch: "+i+" Error: "+error);
 			if(i>0){
 				if(results[i] > results[i-1])

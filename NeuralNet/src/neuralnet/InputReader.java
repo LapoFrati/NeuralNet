@@ -29,7 +29,8 @@ public class InputReader {
 	
 	public long seed;
 	
-	public double learningRate;
+	public double learningRate,
+				  momentum;
 	
 	public InputReader(){	
 		input = new ArrayList<InputPair>();
@@ -77,6 +78,7 @@ public class InputReader {
 	 * NHiddenNeurons: 7
 	 * BatchSize: 10
 	 * LearningRate: 0.0001
+	 * Momentum: 0.0
 	 * Epochs: 500
 	 * 
 	 */
@@ -158,6 +160,16 @@ public class InputReader {
 			
 			if(option.matches("LearningRate: [.0-9\t\r]*")){
 				learningRate = Double.parseDouble(option.split(" ")[1]);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("Momentum: [.0-9\t\r]*")){
+				momentum = Double.parseDouble(option.split(" ")[1]);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
