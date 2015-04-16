@@ -6,7 +6,7 @@ public class TrainSine {
 	public static void main(String[] args) throws IOException {
 		MLP mlp = new MLP(false);
 		
-		mlp.buildNetwork("Sine/Options.txt","Sine/TrainInput.txt");
+		mlp.buildNetwork("Sine/Options.txt","Sine/TrainInput.txt","Sine/TestInput.txt");
 		mlp.train();
 		
 	}
