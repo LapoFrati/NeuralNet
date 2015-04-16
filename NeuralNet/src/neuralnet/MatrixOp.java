@@ -40,10 +40,11 @@ public class MatrixOp {
 		return activatedNeurons;
 	}
 	
-	public static double[] applyDerivative(double[] temp){
+	public static double[] applyTanh(double[] temp){
 		double[] activatedNeurons = new double[temp.length];
 		for(int i = 0; i < activatedNeurons.length; i++)
-			activatedNeurons[i] = Sigmoid.derivative(temp[i]);
+			activatedNeurons[i] = Hyperbolic.activation(temp[i]);
 		return activatedNeurons;
 	}
+	
 }
