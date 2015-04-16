@@ -9,7 +9,8 @@ public class MLP{
 	InputPair currentPair;
 	public int 	epochs, 
 				batch, 
-				numberExamples, 
+				numberTrainExamples,
+				numberTestExamples,
 				hiddenSize,
 				numberInputNeurons, 
 				numberOutputNeurons, 
@@ -34,11 +35,20 @@ public class MLP{
 				dWupper;
 	Random rnd;
 	long seed;
-	boolean useSigmoid;
+	boolean useSigmoid,
+			hasTest = false;
 	
 	public MLP(boolean useSigmoid){
 		input = new InputReader();
 		this.useSigmoid = useSigmoid; 
+	}
+	
+	public void buildNetwork(String optionsFile, String inputTrainFile, String inputTestFile) throws IOException{
+		buildNetwork(optionsFile, inputTrainFile);
+		input.readTestInput(inputTestFile);
+		numberTestExamples = input.numberTestExamples;
+		hasTest = true;
+		
 	}
 	
 	public void buildNetwork(String optionsFile, String inputFile) throws IOException{
@@ -50,10 +60,10 @@ public class MLP{
 		System.out.println("Batch: "+batch);
 		learningRate = input.learningRate;
 		System.out.println("learningRate: "+ learningRate);
-		numberExamples = input.numberTrainExamples;
-		System.out.println("Momentum: "+ learningRate);
+		numberTrainExamples = input.numberTrainExamples;
+		System.out.println("NumberOfExamples: "+numberTrainExamples);
 		momentum = input.momentum;
-		System.out.println("NumberOfExamples: "+numberExamples);
+		System.out.println("Momentum: "+ momentum);
 		numberInputNeurons = input.numberOfInputNeurons;
 		System.out.println("NumberOfInputNeurons: "+numberInputNeurons);
 		numberOutputNeurons = input.numberOfOutputNeurons;
@@ -81,16 +91,16 @@ public class MLP{
 	}
 	
 	public void initializeWeights(){
-		System.out.println("weightRange: +-"+0.2/Math.sqrt(numberExamples));
+		System.out.println("weightRange: +-"+0.2/Math.sqrt(numberTrainExamples));
 		for(int i = 0; i<upperWeights.length; i++){
 			for(int j = 0; j<upperWeights[0].length; j++){
-				upperWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
+				upperWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberTrainExamples);
 			}
 		}
 		
 		for(int i = 0; i<lowerWeights.length; i++){
 			for(int j = 0; j<lowerWeights[0].length; j++){
-				lowerWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberExamples);
+				lowerWeights[i][j] = (rnd.nextDouble()*(0.2)-0.1)/Math.sqrt(numberTrainExamples);
 			}
 		}
 	}
@@ -188,11 +198,12 @@ public class MLP{
 	}
 	
 	public void train(){
-		double[] results = new double[epochs];
+		double[] trainResults = new double[epochs];
 		boolean errorTooBig = true;
 		for(int i = 0; i<epochs && errorTooBig; i++){
+			System.out.println("Epoch: "+i);
 			error = 0;
-			for(int j=0; j<numberExamples; j++){
+			for(int j=0; j<numberTrainExamples; j++){
 				currentPair = input.getTrainPair();
 				actualInput = addBias(currentPair.getInput());
 				expectedOutput = currentPair.getExpectedOutput();
@@ -202,16 +213,38 @@ public class MLP{
 					updateWeights();
 				}
 			}
-			results[i] = error;
-			if(error < 0.01)
-				errorTooBig = false;
-			System.out.println("Epoch: "+i+" Train error: "+error);
-			/*if(i>0){
-				if(results[i] > results[i-1])
-					System.out.println("+"+(results[i]-results[i-1]));
-				else
-					System.out.println(results[i]-results[i-1]);
+			
+			error /= numberTrainExamples;
+			
+			System.out.println("Train error: "+error);
+			
+			/*
+			trainResults[i] = error;
+			if(i>0){
+			if(results[i] > results[i-1])
+				System.out.println("+"+(results[i]-results[i-1]));
+			else
+				System.out.println(results[i]-results[i-1]);
 			}*/
+			
+			if(error < 0.001)
+				errorTooBig = false;
+			
+			error = 0;
+			if(hasTest){
+				for(int h=0; h<numberTestExamples; h++){
+					currentPair = input.getTestPair();
+					actualInput = addBias(currentPair.getInput());
+					expectedOutput = currentPair.getExpectedOutput();
+					forward();
+					
+					for(int k = 0; k<expectedOutput.length;k++){
+						error += Math.pow(expectedOutput[k]-actualOutput[k],2.0)/2;
+					}
+				}
+				error /= numberTestExamples;
+				System.out.println("Test error: "+error);
+			}
 		}
 	}
 }
