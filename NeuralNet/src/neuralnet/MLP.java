@@ -18,7 +18,8 @@ public class MLP{
 	
 	public double 	learningRate, 
 					error,
-					momentum;
+					momentum,
+					targetError;
 	
 	double[] 	actualInput,
 				actualOutput,
@@ -54,25 +55,29 @@ public class MLP{
 	public void buildNetwork(String optionsFile, String inputFile) throws IOException{
 		input.readOptions(optionsFile);
 		input.readTrainInput(inputFile);
-		epochs = input.epochs;
-		System.out.println("Epochs: "+epochs);
-		batch = input.batchSize;
-		System.out.println("Batch: "+batch);
-		learningRate = input.learningRate;
-		System.out.println("learningRate: "+ learningRate);
-		numberTrainExamples = input.numberTrainExamples;
-		System.out.println("NumberOfExamples: "+numberTrainExamples);
-		momentum = input.momentum;
-		System.out.println("Momentum: "+ momentum);
+		
 		numberInputNeurons = input.numberOfInputNeurons;
 		System.out.println("NumberOfInputNeurons: "+numberInputNeurons);
 		numberOutputNeurons = input.numberOfOutputNeurons;
 		System.out.println("NumberOfOutputNeurons: "+numberOutputNeurons);
 		numberHiddenNeurons = input.numberOfHiddenNeurons;
 		System.out.println("NumberOfHiddenNeurons: "+numberHiddenNeurons);
+		batch = input.batchSize;
+		System.out.println("Batch: "+batch);
 		seed = input.seed;
 		System.out.println("Seed: "+seed);
+		learningRate = input.learningRate;
+		System.out.println("learningRate: "+ learningRate);
+		momentum = input.momentum;
+		System.out.println("Momentum: "+ momentum);
+		targetError = input.targetError;
+		System.out.println("Target Error: "+targetError);
+		epochs = input.epochs;
+		System.out.println("Epochs: "+epochs);
 		
+		numberTrainExamples = input.numberTrainExamples;
+		System.out.println("NumberOfExamples: "+numberTrainExamples);
+
 		lowerWeights = new double[numberInputNeurons+1][numberHiddenNeurons]; //add one row for the bias
 		System.out.println("LowerWeights: "+lowerWeights.length+"x"+lowerWeights[0].length);
 		dWlower= new double[numberInputNeurons+1][numberHiddenNeurons];
@@ -227,7 +232,7 @@ public class MLP{
 				System.out.println(results[i]-results[i-1]);
 			}*/
 			
-			if(error < 0.001)
+			if(error < targetError)
 				errorTooBig = false;
 			
 			error = 0;

@@ -5,4 +5,5 @@ BatchSize: 40
 Seed: 42
 LearningRate: 0.01
 Momentum: 0.3
+Error: 0.0001
 Epochs: 1000000

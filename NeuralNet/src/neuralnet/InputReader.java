@@ -32,7 +32,8 @@ public class InputReader {
 	public long seed;
 	
 	public double learningRate,
-				  momentum;
+				  momentum,
+				  targetError;
 	
 	public InputReader(){	
 		inputTrain = new ArrayList<InputPair>();
@@ -188,6 +189,16 @@ public class InputReader {
 			
 			if(option.matches("Momentum: [.0-9\t\r]*")){
 				momentum = Double.parseDouble(option.split(" ")[1]);
+				if(scanner.hasNextLine())
+					option = scanner.nextLine();
+				else{
+					System.out.println("Format Error");
+					return;
+				}
+			}
+			
+			if(option.matches("Error: [.0-9\t\r]*")){
+				targetError = Double.parseDouble(option.split(" ")[1]);
 				if(scanner.hasNextLine())
 					option = scanner.nextLine();
 				else{
