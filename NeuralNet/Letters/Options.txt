@@ -3,6 +3,6 @@ NOutputNeurons: 26
 NHiddenNeurons: 15
 BatchSize: 1000
 Seed: 42
-LearningRate: 0.0001
+LearningRate: 0.01
 Momentum: 0.3
-Epochs: 500
+Epochs: 1000000

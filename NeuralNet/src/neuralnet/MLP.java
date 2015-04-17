@@ -243,8 +243,29 @@ public class MLP{
 					}
 				}
 				error /= numberTestExamples;
-				System.out.println("Test error: "+error);
+				System.out.println("Test error:  "+error);
 			}
 		}
+		if(hasTest){
+			for(int h=0; h<numberTestExamples; h++){
+				currentPair = input.getTestPair();
+				actualInput = addBias(currentPair.getInput());
+				expectedOutput = currentPair.getExpectedOutput();
+				forward();
+				for(int i = 0; i< expectedOutput.length; i++){
+					System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
+				}
+			}
+		}
+		else
+			for(int j=0; j<numberTrainExamples; j++){
+				currentPair = input.getTrainPair();
+				actualInput = addBias(currentPair.getInput());
+				expectedOutput = currentPair.getExpectedOutput();
+				forward();
+				for(int i = 0; i< expectedOutput.length; i++){
+					System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
+				}
+			}
 	}
 }
