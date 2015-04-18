@@ -1,5 +1,7 @@
 package neuralnet;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
@@ -38,10 +40,12 @@ public class MLP{
 	long seed;
 	boolean useSigmoid,
 			hasTest = false;
+	String outputFolder;
 	
-	public MLP(boolean useSigmoid){
+	public MLP(boolean useSigmoid) {
 		input = new InputReader();
-		this.useSigmoid = useSigmoid; 
+		this.useSigmoid = useSigmoid;
+		
 	}
 	
 	public void buildNetwork(String optionsFile, String inputTrainFile, String inputTestFile) throws IOException{
@@ -93,6 +97,13 @@ public class MLP{
 		//System.out.println("UpperDeltas: "+upperDeltas.length);
 		lowerDeltas = new double[numberHiddenNeurons];
 		//System.out.println("LowerDeltas: "+lowerDeltas.length);
+		
+		outputFolder = optionsFile.split("/")[0];
+		
+		FileOutputStream file = new FileOutputStream(outputFolder+"/outputLog.txt");
+	    TeePrintStream tee = new TeePrintStream(file, System.out);
+	    System.setOut(tee);
+		
 	}
 	
 	public void initializeWeights(){
