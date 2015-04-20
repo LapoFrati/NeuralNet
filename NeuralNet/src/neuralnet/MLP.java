@@ -1,9 +1,7 @@
 package neuralnet;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
 public class MLP{
@@ -39,13 +37,14 @@ public class MLP{
 	Random rnd;
 	long seed;
 	boolean useSigmoid,
-			hasTest = false;
+			hasTest = false,
+			multiClass = false;
 	String outputFolder;
 	
-	public MLP(boolean useSigmoid) {
+	public MLP(boolean useSigmoid, boolean multiClass) {
 		input = new InputReader();
 		this.useSigmoid = useSigmoid;
-		
+		this.multiClass = multiClass;
 	}
 	
 	public void buildNetwork(String optionsFile, String inputTrainFile, String inputTestFile) throws IOException{
@@ -59,6 +58,11 @@ public class MLP{
 	public void buildNetwork(String optionsFile, String inputFile) throws IOException{
 		input.readOptions(optionsFile);
 		input.readTrainInput(inputFile);
+		
+		outputFolder = optionsFile.split("/")[0];
+		FileOutputStream file = new FileOutputStream(outputFolder+"/OutputLog.txt");
+	    TeePrintStream tee = new TeePrintStream(file, System.out);
+	    System.setOut(tee);
 		
 		numberInputNeurons = input.numberOfInputNeurons;
 		System.out.println("NumberOfInputNeurons: "+numberInputNeurons);
@@ -97,12 +101,6 @@ public class MLP{
 		//System.out.println("UpperDeltas: "+upperDeltas.length);
 		lowerDeltas = new double[numberHiddenNeurons];
 		//System.out.println("LowerDeltas: "+lowerDeltas.length);
-		
-		outputFolder = optionsFile.split("/")[0];
-		
-		FileOutputStream file = new FileOutputStream(outputFolder+"/outputLog.txt");
-	    TeePrintStream tee = new TeePrintStream(file, System.out);
-	    System.setOut(tee);
 		
 	}
 	
@@ -192,9 +190,24 @@ public class MLP{
 		calculateLowerDW();
 		
 		double error = 0.0;
-		for(int i = 0; i<expectedOutput.length;i++){
-			error += Math.pow(expectedOutput[i]-actualOutput[i],2.0)/2;
+		
+		if(multiClass){ // hard-max
+			double maxVal = 0.0;
+			int maxPos = 0;
+			for(int i = 0; i<actualOutput.length;i++){
+				if(actualOutput[i] > maxVal){
+					maxVal = actualOutput[i];
+					maxPos = i;
+				}
+			}
+			if(expectedOutput[maxPos] < 1.0)
+				error = 1.0;
+		}else{ // squared-error
+			for(int i = 0; i<expectedOutput.length;i++){
+				error += Math.pow(expectedOutput[i]-actualOutput[i],2.0)/2;
+			}
 		}
+		
 		return error;
 	}
 	
@@ -214,7 +227,9 @@ public class MLP{
 	}
 	
 	public void train(){
-		double[] trainResults = new double[epochs];
+		double minTestErrorValue = Double.MAX_VALUE;
+		int minTestErrorEpoch = 0;
+		
 		boolean errorTooBig = true;
 		for(int i = 0; i<epochs && errorTooBig; i++){
 			System.out.println("Epoch: "+i);
@@ -234,34 +249,44 @@ public class MLP{
 			
 			System.out.println("Train error: "+error);
 			
-			/*
-			trainResults[i] = error;
-			if(i>0){
-			if(results[i] > results[i-1])
-				System.out.println("+"+(results[i]-results[i-1]));
-			else
-				System.out.println(results[i]-results[i-1]);
-			}*/
-			
 			if(error < targetError)
 				errorTooBig = false;
 			
-			error = 0;
 			if(hasTest){
+				error = 0;
 				for(int h=0; h<numberTestExamples; h++){
 					currentPair = input.getTestPair();
 					actualInput = addBias(currentPair.getInput());
 					expectedOutput = currentPair.getExpectedOutput();
 					forward();
 					
-					for(int k = 0; k<expectedOutput.length;k++){
-						error += Math.pow(expectedOutput[k]-actualOutput[k],2.0)/2;
+					if(multiClass){ // hard-max
+						double maxVal = 0.0;
+						int maxPos = 0;
+						for(int j = 0; j<actualOutput.length;j++){ 
+							if(actualOutput[j] > maxVal){
+								maxVal = actualOutput[j];
+								maxPos = j;
+							}
+						}
+						if(expectedOutput[maxPos] < 1.0)
+							error += 1.0;
+					}else{ // squared-error
+						for(int k = 0; k<expectedOutput.length;k++){
+							error += Math.pow(expectedOutput[k]-actualOutput[k],2.0)/2;
+						}
 					}
 				}
 				error /= numberTestExamples;
+				if(error < minTestErrorValue){
+					minTestErrorValue = error;
+					minTestErrorEpoch = i;
+				}
 				System.out.println("Test error:  "+error);
 			}
 		}
+		
+		//after training has finished
 		if(hasTest){
 			for(int h=0; h<numberTestExamples; h++){
 				currentPair = input.getTestPair();
@@ -272,6 +297,7 @@ public class MLP{
 					System.out.println("Expected: "+expectedOutput[i]+" - Actual: "+actualOutput[i]);
 				}
 			}
+			System.out.println("Minimun Test Error: "+minTestErrorValue+" at epoch: "+minTestErrorEpoch);
 		}
 		else
 			for(int j=0; j<numberTrainExamples; j++){
