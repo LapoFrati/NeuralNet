@@ -41,11 +41,13 @@ public class InputReader {
 	}
 	
 	public InputPair getTrainPair(){
-		return inputTrain.get((trainCounter++)%numberTrainExamples);
+		trainCounter = (trainCounter+1)%numberTrainExamples;
+		return inputTrain.get(trainCounter);
 	}
 	
 	public InputPair getTestPair(){
-		return inputTest.get((testCounter++)%numberTestExamples);
+		testCounter = (testCounter + 1)%numberTestExamples;
+		return inputTest.get(testCounter);
 	}
 	
 	/* Reads the file optionFile, then parses the inputFile repeatedly calling processElement
