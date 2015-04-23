@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class InputReader {
@@ -17,8 +18,8 @@ public class InputReader {
 	
 	public ArrayList<InputPair> inputTrain, inputTest;
 	
-	public int 	trainCounter = 0,
-				testCounter = 0,
+	public int 	trainCounter = -1,
+				testCounter = -1,
 				numberTrainExamples,
 				numberTestExamples,
 				batchSize,
@@ -42,11 +43,17 @@ public class InputReader {
 	
 	public InputPair getTrainPair(){
 		trainCounter = (trainCounter+1)%numberTrainExamples;
+		if(trainCounter == 0){
+			Collections.shuffle(inputTrain);
+		}
 		return inputTrain.get(trainCounter);
 	}
 	
 	public InputPair getTestPair(){
 		testCounter = (testCounter + 1)%numberTestExamples;
+		if(testCounter == 0){
+			Collections.shuffle(inputTest);
+		}
 		return inputTest.get(testCounter);
 	}
 	
