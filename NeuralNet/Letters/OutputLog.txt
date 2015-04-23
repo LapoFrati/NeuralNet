@@ -1,0 +1,269 @@
+NumberOfInputNeurons: 16
+NumberOfOutputNeurons: 26
+NumberOfHiddenNeurons: 30
+Batch: 1600
+Seed: 42
+learningRate: 0.001
+Momentum: 0.2
+Target Error: 1.0E-5
+Epochs: 1000
+NumberOfExamples: 16000
+LowerWeights: 17x30
+UpperWeights: 31x26
+weightRange: +-0.0015811388300841897
+Epoch: 0
+Train error: 0.961
+Test error:  0.96125
+Epoch: 1
+Train error: 0.96
+Test error:  0.961
+Epoch: 2
+Train error: 0.96
+Test error:  0.961
+Epoch: 3
+Train error: 0.9604375
+Test error:  0.961
+Epoch: 4
+Train error: 0.9618125
+Test error:  0.95975
+Epoch: 5
+Train error: 0.9608125
+Test error:  0.95975
+Epoch: 6
+Train error: 0.9626875
+Test error:  0.95975
+Epoch: 7
+Train error: 0.961375
+Test error:  0.95975
+Epoch: 8
+Train error: 0.961
+Test error:  0.95975
+Epoch: 9
+Train error: 0.960125
+Test error:  0.9595
+Epoch: 10
+Train error: 0.960625
+Test error:  0.96
+Epoch: 11
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 12
+Train error: 0.96125
+Test error:  0.95975
+Epoch: 13
+Train error: 0.962
+Test error:  0.95975
+Epoch: 14
+Train error: 0.96075
+Test error:  0.95975
+Epoch: 15
+Train error: 0.9630625
+Test error:  0.95975
+Epoch: 16
+Train error: 0.9613125
+Test error:  0.95975
+Epoch: 17
+Train error: 0.9593125
+Test error:  0.95975
+Epoch: 18
+Train error: 0.9615
+Test error:  0.95975
+Epoch: 19
+Train error: 0.960125
+Test error:  0.95975
+Epoch: 20
+Train error: 0.9610625
+Test error:  0.95975
+Epoch: 21
+Train error: 0.961375
+Test error:  0.95975
+Epoch: 22
+Train error: 0.961
+Test error:  0.95975
+Epoch: 23
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 24
+Train error: 0.9616875
+Test error:  0.95975
+Epoch: 25
+Train error: 0.95925
+Test error:  0.9655
+Epoch: 26
+Train error: 0.9608125
+Test error:  0.96
+Epoch: 27
+Train error: 0.9613125
+Test error:  0.95975
+Epoch: 28
+Train error: 0.9619375
+Test error:  0.95975
+Epoch: 29
+Train error: 0.9606875
+Test error:  0.9595
+Epoch: 30
+Train error: 0.95925
+Test error:  0.96
+Epoch: 31
+Train error: 0.9621875
+Test error:  0.95975
+Epoch: 32
+Train error: 0.9626875
+Test error:  0.95975
+Epoch: 33
+Train error: 0.9604375
+Test error:  0.95975
+Epoch: 34
+Train error: 0.9630625
+Test error:  0.95975
+Epoch: 35
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 36
+Train error: 0.9604375
+Test error:  0.95975
+Epoch: 37
+Train error: 0.9625
+Test error:  0.95975
+Epoch: 38
+Train error: 0.9614375
+Test error:  0.9595
+Epoch: 39
+Train error: 0.959875
+Test error:  0.96
+Epoch: 40
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 41
+Train error: 0.961875
+Test error:  0.9595
+Epoch: 42
+Train error: 0.96075
+Test error:  0.96
+Epoch: 43
+Train error: 0.961
+Test error:  0.9595
+Epoch: 44
+Train error: 0.95975
+Test error:  0.9655
+Epoch: 45
+Train error: 0.9608125
+Test error:  0.9655
+Epoch: 46
+Train error: 0.9595
+Test error:  0.95975
+Epoch: 47
+Train error: 0.9604375
+Test error:  0.95975
+Epoch: 48
+Train error: 0.96025
+Test error:  0.9655
+Epoch: 49
+Train error: 0.961375
+Test error:  0.95975
+Epoch: 50
+Train error: 0.96125
+Test error:  0.95975
+Epoch: 51
+Train error: 0.9595
+Test error:  0.9655
+Epoch: 52
+Train error: 0.9594375
+Test error:  0.9655
+Epoch: 53
+Train error: 0.961125
+Test error:  0.9655
+Epoch: 54
+Train error: 0.96
+Test error:  0.9655
+Epoch: 55
+Train error: 0.9624375
+Test error:  0.95975
+Epoch: 56
+Train error: 0.9634375
+Test error:  0.95975
+Epoch: 57
+Train error: 0.95975
+Test error:  0.95975
+Epoch: 58
+Train error: 0.9605625
+Test error:  0.95975
+Epoch: 59
+Train error: 0.960625
+Test error:  0.95975
+Epoch: 60
+Train error: 0.96175
+Test error:  0.95975
+Epoch: 61
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 62
+Train error: 0.961375
+Test error:  0.95975
+Epoch: 63
+Train error: 0.9605
+Test error:  0.95975
+Epoch: 64
+Train error: 0.9603125
+Test error:  0.95975
+Epoch: 65
+Train error: 0.960625
+Test error:  0.95975
+Epoch: 66
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 67
+Train error: 0.9614375
+Test error:  0.95975
+Epoch: 68
+Train error: 0.961625
+Test error:  0.95975
+Epoch: 69
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 70
+Train error: 0.96175
+Test error:  0.95975
+Epoch: 71
+Train error: 0.96125
+Test error:  0.9655
+Epoch: 72
+Train error: 0.9601875
+Test error:  0.95975
+Epoch: 73
+Train error: 0.9616875
+Test error:  0.95975
+Epoch: 74
+Train error: 0.960375
+Test error:  0.95975
+Epoch: 75
+Train error: 0.961625
+Test error:  0.95975
+Epoch: 76
+Train error: 0.9606875
+Test error:  0.95975
+Epoch: 77
+Train error: 0.9623125
+Test error:  0.95975
+Epoch: 78
+Train error: 0.9643125
+Test error:  0.95975
+Epoch: 79
+Train error: 0.962125
+Test error:  0.95975
+Epoch: 80
+Train error: 0.9610625
+Test error:  0.95975
+Epoch: 81
+Train error: 0.9628125
+Test error:  0.95975
+Epoch: 82
+Train error: 0.9600625
+Test error:  0.95975
+Epoch: 83
+Train error: 0.9601875
+Test error:  0.9655
+Epoch: 84
+Train error: 0.9624375
+Test error:  0.9655
+Epoch: 85

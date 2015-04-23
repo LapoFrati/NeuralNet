@@ -1,0 +1,161 @@
+NumberOfInputNeurons: 16
+NumberOfOutputNeurons: 26
+NumberOfHiddenNeurons: 15
+Batch: 1600
+Seed: 42
+learningRate: 1.0E-4
+Momentum: 0.2
+Target Error: 1.0E-5
+Epochs: 1000000
+NumberOfExamples: 16000
+LowerWeights: 17x15
+UpperWeights: 16x26
+weightRange: +-0.0015811388300841897
+
+Epoch: 0
+Train error: 0.9629375
+Test error:  0.95975
+Epoch: 1
+Train error: 0.9619375
+Test error:  0.95975
+Epoch: 2
+Train error: 0.960625
+Test error:  0.95975
+Epoch: 3
+Train error: 0.960625
+Test error:  0.95975
+Epoch: 4
+Train error: 0.95925
+Test error:  0.95975
+Epoch: 5
+Train error: 0.95925
+Test error:  0.95975
+
+...
+
+Epoch: 9995
+Train error: 0.860875
+Test error:  0.87325
+Epoch: 9996
+Train error: 0.8605
+Test error:  0.8725
+Epoch: 9997
+Train error: 0.86
+Test error:  0.87175
+Epoch: 9998
+Train error: 0.8596875
+Test error:  0.8715
+Epoch: 9999
+Train error: 0.8595
+Test error:  0.871
+Epoch: 10000
+Train error: 0.859375
+Test error:  0.87075
+
+...
+
+Epoch: 14995
+Train error: 0.7411875
+Test error:  0.75475
+Epoch: 14996
+Train error: 0.741125
+Test error:  0.75475
+Epoch: 14997
+Train error: 0.741125
+Test error:  0.7545
+Epoch: 14998
+Train error: 0.741125
+Test error:  0.7545
+Epoch: 14999
+Train error: 0.741125
+Test error:  0.7545
+Epoch: 15000
+Train error: 0.7411875
+Test error:  0.75475
+
+...
+
+Epoch: 19995
+Train error: 0.4259375
+Test error:  0.4445
+Epoch: 19996
+Train error: 0.425875
+Test error:  0.4445
+Epoch: 19997
+Train error: 0.42575
+Test error:  0.44425
+Epoch: 19998
+Train error: 0.42575
+Test error:  0.44425
+Epoch: 19999
+Train error: 0.42575
+Test error:  0.44425
+Epoch: 20000
+Train error: 0.425625
+Test error:  0.44425
+
+...
+
+Epoch: 29995
+Train error: 0.293375
+Test error:  0.3085
+Epoch: 29996
+Train error: 0.29325
+Test error:  0.3085
+Epoch: 29997
+Train error: 0.29325
+Test error:  0.3085
+Epoch: 29998
+Train error: 0.29325
+Test error:  0.3085
+Epoch: 29999
+Train error: 0.2931875
+Test error:  0.3085
+Epoch: 30000
+Train error: 0.2931875
+Test error:  0.3085
+
+...
+
+Epoch: 99995
+Train error: 0.2028125
+Test error:  0.21075
+Epoch: 99996
+Train error: 0.2028125
+Test error:  0.21075
+Epoch: 99997
+Train error: 0.2028125
+Test error:  0.21075
+Epoch: 99998
+Train error: 0.2028125
+Test error:  0.21075
+Epoch: 99999
+Train error: 0.2028125
+Test error:  0.21075
+Epoch: 100000
+Train error: 0.2028125
+Test error:  0.21075
+
+...
+
+Epoch: 249994
+Train error: 0.18775
+Test error:  0.198
+Epoch: 249995
+Train error: 0.18775
+Test error:  0.198
+Epoch: 249996
+Train error: 0.18775
+Test error:  0.198
+Epoch: 249997
+Train error: 0.18775
+Test error:  0.198
+Epoch: 249998
+Train error: 0.18775
+Test error:  0.198
+Epoch: 249999
+Train error: 0.18775
+Test error:  0.198
+Epoch: 250000
+Train error: 0.18775
+Test error:  0.198

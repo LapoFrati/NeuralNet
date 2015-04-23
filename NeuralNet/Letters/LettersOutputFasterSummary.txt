@@ -1,0 +1,93 @@
+NumberOfInputNeurons: 16
+NumberOfOutputNeurons: 26
+NumberOfHiddenNeurons: 40
+Batch: 160
+Seed: 42
+learningRate: 0.001
+Momentum: 0.2
+Target Error: 1.0E-5
+Epochs: 100000
+NumberOfExamples: 16000
+LowerWeights: 17x40
+UpperWeights: 41x26
+weightRange: +-0.0015811388300841897
+
+Epoch: 0
+Train error: 0.9618125
+Test error:  0.95825
+Epoch: 1
+Train error: 0.9636875
+Test error:  0.964
+Epoch: 2
+Train error: 0.9653125
+Test error:  0.964
+Epoch: 3
+Train error: 0.9649375
+Test error:  0.964
+Epoch: 4
+Train error: 0.9644375
+Test error:  0.964
+Epoch: 5
+
+...
+
+Epoch: 495
+Train error: 0.5795625
+Test error:  0.58275
+Epoch: 496
+Train error: 0.576
+Test error:  0.57975
+Epoch: 497
+Train error: 0.57275
+Test error:  0.578
+Epoch: 498
+Train error: 0.569625
+Test error:  0.57475
+Epoch: 499
+Train error: 0.5679375
+Test error:  0.57325
+Epoch: 500
+Train error: 0.5651875
+Test error:  0.57025
+
+...
+
+Epoch: 995
+Train error: 0.2900625
+Test error:  0.31525
+Epoch: 996
+Train error: 0.289875
+Test error:  0.3145
+Epoch: 997
+Train error: 0.289625
+Test error:  0.3135
+Epoch: 998
+Train error: 0.2893125
+Test error:  0.3135
+Epoch: 999
+Train error: 0.2894375
+Test error:  0.313
+Epoch: 1000
+Train error: 0.28925
+Test error:  0.3125
+
+...
+
+Epoch: 1995
+Train error: 0.217375
+Test error:  0.239
+Epoch: 1996
+Train error: 0.217375
+Test error:  0.239
+Epoch: 1997
+Train error: 0.2171875
+Test error:  0.23925
+Epoch: 1998
+Train error: 0.2171875
+Test error:  0.23925
+Epoch: 1999
+Train error: 0.217125
+Test error:  0.239
+Epoch: 2000
+Train error: 0.217
+Test error:  0.239

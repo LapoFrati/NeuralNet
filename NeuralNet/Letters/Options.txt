@@ -1,9 +1,9 @@
 NInputNeurons: 16
 NOutputNeurons: 26
-NHiddenNeurons: 15
+NHiddenNeurons: 30
 BatchSize: 1600
 Seed: 42
-LearningRate: 0.0001
+LearningRate: 0.001
 Momentum: 0.2
 Error: 0.00001
-Epochs: 1000000
+Epochs: 1000
